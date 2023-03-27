@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Xml;
+using System.Globalization;
 
 namespace Generic1
 {
@@ -11,17 +12,24 @@ namespace Generic1
     {
         static void Main(string[] args)
         {
-            PrintService printService = new PrintService();
-            Console.WriteLine("How many values?");
+            List<Product> list = new List<Product>();
+
+            Console.WriteLine("Enter n: ");
             int n = int.Parse(Console.ReadLine());
 
-            for (int i = 0; i < n; i++)
+            for(int i = 0; i < n; i++)
             {
-                int x = int.Parse(Console.ReadLine());
-                printService.AddValue(x);
+                string[] vect = Console.ReadLine().Split(',');
+                string name = vect[0];
+                double price = double.Parse(vect[1], CultureInfo.InvariantCulture);
+                list.Add(new Product(name, price));
             }
-            printService.Print();
-            Console.WriteLine("First: " + printService.First());
+            CalculationService calculationService = new CalculationService();
+
+            Product max = calculationService.Max(list);
+
+            Console.Write("Max: ");
+            Console.WriteLine(max);
         }
     }
 
